@@ -2,15 +2,32 @@
 
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Separator?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
 <?import javafx.scene.layout.Pane?>
 
 
-<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/9" xmlns:fx="http://javafx.com/fxml/1">
+<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="661.0" xmlns="http://javafx.com/javafx/9" xmlns:fx="http://javafx.com/fxml/1" fx:controller="app.controller.ManagerController">
    <children>
-      <Separator layoutX="114.0" orientation="VERTICAL" prefHeight="400.0" prefWidth="0.0" />
-      <Button layoutX="12.0" layoutY="146.0" mnemonicParsing="false" prefHeight="54.0" prefWidth="98.0" text="New Visit" />
-      <Button layoutX="12.0" layoutY="208.0" mnemonicParsing="false" prefHeight="54.0" prefWidth="98.0" text="Show Visits" />
-      <Button layoutX="12.0" layoutY="270.0" mnemonicParsing="false" prefHeight="54.0" prefWidth="98.0" text="Specialists" />
-      <Button layoutX="12.0" layoutY="332.0" mnemonicParsing="false" prefHeight="54.0" prefWidth="98.0" text="Patients" />
+      <Separator layoutX="120.0" orientation="VERTICAL" prefHeight="400.0" prefWidth="0.0" />
+      <Button layoutX="10.0" layoutY="160.0" mnemonicParsing="false" prefHeight="50.0" prefWidth="100.0" text="New Visit" />
+      <Button layoutX="10.0" layoutY="220.0" mnemonicParsing="false" prefHeight="50.0" prefWidth="100.0" text="Show Visits" />
+      <Button fx:id="btn_specialists" layoutX="10.0" layoutY="280.0" mnemonicParsing="false" onMouseClicked="#showSpecialists" prefHeight="50.0" prefWidth="100.0" text="Specialists" />
+      <Button fx:id="btn_patients" layoutX="10.0" layoutY="340.0" mnemonicParsing="false" onMouseClicked="#showPatients" prefHeight="50.0" prefWidth="100.0" text="Patients" />
+      <TableView fx:id="patients_table_view" layoutX="130.0" layoutY="90.0" prefHeight="299.0" prefWidth="520.0" visible="false">
+        <columns>
+          <TableColumn fx:id="id_patient" prefWidth="60.0" text="ID" />
+          <TableColumn fx:id="pat_name" minWidth="0.0" prefWidth="220.0" text="Name" />
+            <TableColumn fx:id="pat_last" prefWidth="240.0" text="Surname" />
+        </columns>
+      </TableView>
+      <TableView fx:id="specialists_table_view" layoutX="130.0" layoutY="90.0" prefHeight="299.0" prefWidth="520.0" visible="false">
+         <columns>
+            <TableColumn fx:id="id_spec" prefWidth="40.0" text="ID" />
+            <TableColumn fx:id="spec_name" minWidth="0.0" prefWidth="150.0" text="Name" />
+            <TableColumn fx:id="spec_last" prefWidth="150.0" text="Surname" />
+            <TableColumn fx:id="spec" prefWidth="180.0" text="Speciality" />
+         </columns>
+      </TableView>
    </children>
 </Pane>
