@@ -1,17 +1,19 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.DatePicker?>
 <?import javafx.scene.control.Separator?>
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
+<?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.Pane?>
-
 
 <Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="661.0" xmlns="http://javafx.com/javafx/9" xmlns:fx="http://javafx.com/fxml/1" fx:controller="app.controller.ManagerController">
    <children>
       <Separator layoutX="120.0" orientation="VERTICAL" prefHeight="400.0" prefWidth="0.0" />
       <Button layoutX="10.0" layoutY="160.0" mnemonicParsing="false" prefHeight="50.0" prefWidth="100.0" text="New Visit" />
-      <Button layoutX="10.0" layoutY="220.0" mnemonicParsing="false" prefHeight="50.0" prefWidth="100.0" text="Show Visits" />
+      <Button fx:id="btn_visits" layoutX="10.0" layoutY="220.0" mnemonicParsing="false" onMouseClicked="#showVisits" prefHeight="50.0" prefWidth="100.0" text="Visits" />
       <Button fx:id="btn_specialists" layoutX="10.0" layoutY="280.0" mnemonicParsing="false" onMouseClicked="#showSpecialists" prefHeight="50.0" prefWidth="100.0" text="Specialists" />
       <Button fx:id="btn_patients" layoutX="10.0" layoutY="340.0" mnemonicParsing="false" onMouseClicked="#showPatients" prefHeight="50.0" prefWidth="100.0" text="Patients" />
       <TableView fx:id="patients_table_view" layoutX="130.0" layoutY="90.0" prefHeight="299.0" prefWidth="520.0" visible="false">
@@ -29,5 +31,22 @@
             <TableColumn fx:id="spec" prefWidth="180.0" text="Speciality" />
          </columns>
       </TableView>
+      <AnchorPane fx:id="visits_view" layoutX="130.0" layoutY="14.0" prefHeight="375.0" prefWidth="520.0" visible="false">
+         <children>
+            <ComboBox fx:id="spec_combo" layoutX="162.0" layoutY="20.0" prefHeight="27.0" prefWidth="150.0" promptText="Speciality" />
+            <ComboBox fx:id="spec_last_combo" layoutX="1.0" layoutY="20.0" prefWidth="150.0" promptText="Surname" />
+            <DatePicker fx:id="visit_date" layoutX="326.0" layoutY="20.0" promptText="Select date..." />
+            <Button fx:id="show_visits" layoutX="234.0" layoutY="61.0" mnemonicParsing="false" text="Show" />
+            <TableView fx:id="visits_table_view" layoutX="76.0" layoutY="161.0" prefHeight="200.0" prefWidth="418.0">
+              <columns>
+                <TableColumn fx:id="monday" prefWidth="75.0" text="monday" />
+                <TableColumn fx:id="tuesday" prefWidth="75.0" text="tuesday" />
+                  <TableColumn fx:id="wednesday" prefWidth="75.0" text="wednesday" />
+                  <TableColumn fx:id="thursday" prefWidth="75.0" text="thursday" />
+                  <TableColumn fx:id="friday" prefWidth="75.0" text="friday" />
+              </columns>
+            </TableView>
+         </children>
+      </AnchorPane>
    </children>
 </Pane>

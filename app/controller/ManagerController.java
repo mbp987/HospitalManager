@@ -9,14 +9,20 @@ import java.sql.Statement;
 import app.database.DBConnect;
 import app.model.Patients;
 import app.model.Specialists;
+import app.model.Visits;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
+import javafx.scene.control.ComboBox;
+import javafx.scene.control.DatePicker;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.AnchorPane;
+
+
 
 public class ManagerController {
 
@@ -24,6 +30,7 @@ public class ManagerController {
 
 	public ObservableList<Patients> patients;
 	public ObservableList<Specialists> specialists;
+	public ObservableList<Visits> visits;
 	
 	@FXML
 	TableView<Patients> patients_table_view;
@@ -43,12 +50,48 @@ public class ManagerController {
 	TableColumn<Specialists, String> spec_last;
 	@FXML
 	TableColumn<Specialists, String> spec;
+
+    @FXML
+    private AnchorPane visits_view;
+	
+	@FXML
+    private ComboBox<String> spec_last_combo;
+
+    @FXML
+    private ComboBox<String> spec_combo;
+
+    @FXML
+    private Button show_visits;
+
+    @FXML
+    private DatePicker visit_date;
+
+    @FXML
+    private TableView<?> visits_table_view;
+
+    @FXML
+    private TableColumn<?, ?> monday;
+
+    @FXML
+    private TableColumn<?, ?> tuesday;
+
+    @FXML
+    private TableColumn<?, ?> wednesday;
+
+    @FXML
+    private TableColumn<?, ?> thursday;
+
+    @FXML
+    private TableColumn<?, ?> friday;
+	
+	
 	
 	@FXML
     private Button btn_patients;
-	
 	@FXML
     private Button btn_specialists;
+	@FXML
+    private Button btn_visits;
 
 	
 	@FXML
@@ -57,6 +100,7 @@ public class ManagerController {
 		patients = FXCollections.observableArrayList();
 		patients_table_view.setVisible(true);
 		specialists_table_view.setVisible(false);
+		visits_view.setVisible(false);
 		
 		Connection conn = db.getConnection();
 		Statement stmt = conn.createStatement();
@@ -80,6 +124,8 @@ public class ManagerController {
 		patients_table_view.setVisible(false);
 		specialists_table_view.setVisible(true);
 		
+		visits_view.setVisible(false);
+		
 		Connection conn = db.getConnection();
 		Statement stmt = conn.createStatement();
 		ResultSet rs = stmt.executeQuery("SELECT * FROM specialists;");
@@ -95,6 +141,14 @@ public class ManagerController {
 		System.out.println(specialists_table_view);
 	}
 	
+	
+	@FXML
+    void showVisits(MouseEvent event) {
+		patients_table_view.setVisible(false);
+		specialists_table_view.setVisible(false);
+		visits_view.setVisible(true);
+		visits_table_view.setVisible(true);
+    }
 	
 	
 	public void initialize() {
