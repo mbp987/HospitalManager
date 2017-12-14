@@ -12,6 +12,7 @@ import app.model.Specialists;
 import app.model.Visits;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
@@ -31,6 +32,17 @@ public class ManagerController {
 	public ObservableList<Patients> patients;
 	public ObservableList<Specialists> specialists;
 	public ObservableList<Visits> visits;
+	//combo list to be rebuild
+	ObservableList<String> spec1 = FXCollections.observableArrayList("cardiologist", "dermatologist", "gynaecologist", "neurologist", "oculist", "orthopaedist", "paediatrician");
+	ObservableList<String> spec1last = FXCollections.observableArrayList("Adamczyk", "Barańska", "Cember", "Dior", "Etan", "Flis", "Grzegorczyk", "Holm", "Imo", "Jasińska");
+	
+	ObservableList<String> cardiologists = FXCollections.observableArrayList("Cember", "Jasińska");
+	ObservableList<String> dermatologists = FXCollections.observableArrayList("Adamczyk", "Etan");
+	ObservableList<String> gynaecologists = FXCollections.observableArrayList("Holm");
+	ObservableList<String> neurologists = FXCollections.observableArrayList("Dior");
+	ObservableList<String> oculists = FXCollections.observableArrayList("Flis");
+	ObservableList<String> orthopaedists = FXCollections.observableArrayList("Grzegorczyk");
+	ObservableList<String> paediatricians = FXCollections.observableArrayList("Barańska", "Imo");
 	
 	@FXML
 	TableView<Patients> patients_table_view;
@@ -67,7 +79,7 @@ public class ManagerController {
     private DatePicker visit_date;
 
     @FXML
-    private TableView<?> visits_table_view;
+    private TableView<Visits> visits_table_view;
 
     @FXML
     private TableColumn<?, ?> monday;
@@ -148,8 +160,72 @@ public class ManagerController {
 		specialists_table_view.setVisible(false);
 		visits_view.setVisible(true);
 		visits_table_view.setVisible(true);
+
     }
 	
+	@FXML
+    void chooseLast(ActionEvent event) {
+		
+		if (spec_combo.getValue().equals("cardiologist")){
+			refresh();
+		}
+		else if(spec_combo.getValue().equals("dermatologist")){
+			refresh();
+		}
+		else if(spec_combo.getValue().equals("gynaecologist")){
+			refresh();
+		}
+		else if(spec_combo.getValue().equals("neurologist")){
+			refresh();
+		}
+		else if(spec_combo.getValue().equals("oculist")){
+			refresh();
+		}
+		else if(spec_combo.getValue().equals("orthopaedist")){
+			refresh();
+		}
+		else if(spec_combo.getValue().equals("paediatrician")){
+			refresh();
+		}
+		else {
+			spec_last_combo.setItems(spec1last);
+		}	
+    }
+	
+	public void refresh() {
+		if (spec_combo.getValue().equals("cardiologist")){
+			spec_last_combo.setValue("Cember");
+			spec_last_combo.setItems(cardiologists);
+		}
+		else if (spec_combo.getValue().equals("dermatologist")){
+			spec_last_combo.setValue("Adamczyk");
+			spec_last_combo.setItems(dermatologists);
+		}	
+		else if (spec_combo.getValue().equals("gynaecologist")){
+			spec_last_combo.setValue("Holm");
+			spec_last_combo.setItems(gynaecologists);
+		}	
+		else if (spec_combo.getValue().equals("neurologist")){
+			spec_last_combo.setValue("Dior");
+			spec_last_combo.setItems(neurologists);
+		}	
+		else if (spec_combo.getValue().equals("oculist")){
+			spec_last_combo.setValue("Flis");
+			spec_last_combo.setItems(oculists);
+		}	
+		else if (spec_combo.getValue().equals("orthopaedist")){
+			spec_last_combo.setValue("Grzegorczyk");
+			spec_last_combo.setItems(orthopaedists);
+		}	
+		else if (spec_combo.getValue().equals("paediatrician")){
+			spec_last_combo.setValue("Barańska");
+			spec_last_combo.setItems(paediatricians);
+		}	
+		else {
+			spec_last_combo.setItems(spec1last);
+		}
+	
+	}
 	
 	public void initialize() {
 		db = new DBConnect();
@@ -160,6 +236,9 @@ public class ManagerController {
 		spec_name.setCellValueFactory(new PropertyValueFactory<Specialists, String>("spec_name"));
 		spec_last.setCellValueFactory(new PropertyValueFactory<Specialists, String>("spec_last"));
 		spec.setCellValueFactory(new PropertyValueFactory<Specialists, String>("spec"));
+		
+		spec_combo.setItems(spec1);
+		spec_last_combo.setItems(spec1last);
 	}
 	
 }
