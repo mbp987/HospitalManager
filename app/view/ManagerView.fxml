@@ -49,12 +49,14 @@
             </TableView>
          </children>
       </AnchorPane>
-      <AnchorPane fx:id="new_visit_view" layoutX="130.0" layoutY="14.0" prefHeight="375.0" prefWidth="520.0" visible="false">
+      <AnchorPane fx:id="new_visit_view" layoutX="130.0" layoutY="14.0" prefHeight="375.0" prefWidth="520.0">
          <children>
             <ComboBox fx:id="nv_spec_combo" layoutX="1.0" layoutY="7.0" onAction="#nvChooseLast" prefHeight="27.0" prefWidth="150.0" promptText="Speciality" />
             <ComboBox fx:id="nv_spec_last_combo" layoutX="165.0" layoutY="7.0" prefWidth="150.0" promptText="Surname" />
             <Button fx:id="nv_btn_show_available" layoutX="328.0" layoutY="7.0" mnemonicParsing="false" onMouseClicked="#showSelectedSchedule" prefHeight="27.0" prefWidth="183.0" text="Show weekly schedule" />
-            <TableView fx:id="nv_visits_table_view" layoutX="51.0" layoutY="88.0" prefHeight="200.0" prefWidth="418.0">
+            <DatePicker fx:id="nv_visit_date_picker" layoutX="178.0" layoutY="266.0" prefHeight="27.0" prefWidth="150.0" promptText="Select date..." />
+            <ComboBox fx:id="nv_hour_combo" layoutX="345.0" layoutY="266.0" prefWidth="150.0" promptText="Select hour..." />
+            <TableView fx:id="nv_visits_table_view" layoutX="51.0" layoutY="88.0" prefHeight="111.0" prefWidth="418.0">
                <columns>
                   <TableColumn fx:id="nv_monday" text="Monday" />
                   <TableColumn fx:id="nv_tuesday" text="Tuesday" />
@@ -63,9 +65,8 @@
                   <TableColumn fx:id="nv_friday" text="Friday" />
                </columns>
             </TableView>
-            <DatePicker fx:id="nv_visit_date_picker" layoutX="1.0" layoutY="325.0" prefHeight="27.0" prefWidth="150.0" promptText="Select date..." />
-            <ComboBox fx:id="nv_hour_combo" layoutX="185.0" layoutY="325.0" prefWidth="150.0" promptText="Select hour..." />
-            <Button layoutX="361.0" layoutY="325.0" mnemonicParsing="false" text="Add new visit" />
+            <Button fx:id="nv_set_new_visit" layoutX="394.0" layoutY="302.0" mnemonicParsing="false" onMouseClicked="#setNewVisit" text="Add new visit" />
+            <ComboBox fx:id="nv_patient_last_combo" layoutX="14.0" layoutY="266.0" prefWidth="150.0" promptText="Patient" />
          </children>
       </AnchorPane>
    </children>

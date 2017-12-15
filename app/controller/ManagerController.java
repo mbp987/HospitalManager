@@ -41,6 +41,9 @@ public class ManagerController {
 	//combo list to be rebuild
 	ObservableList<String> spec1 = FXCollections.observableArrayList("cardiologist", "dermatologist", "gynaecologist", "neurologist", "oculist", "orthopaedist", "paediatrician");
 	ObservableList<String> spec1last = FXCollections.observableArrayList("Adamczyk", "Barańska", "Cember", "Dior", "Etan", "Flis", "Grzegorczyk", "Holm", "Imo", "Jasińska");
+	ObservableList<String> patient1last = FXCollections.observableArrayList("Mouse", "Duck", "Szary", "Baggins", "Wayne", "White", "Kent", "Smurf", "America", "Bravo");
+	ObservableList<String> hours = FXCollections.observableArrayList("08:00:00", "09:00:00", "10:00:00", "11:00:00", "12:00:00", "13:00:00", "14:00:00", "15:00:00", "16:00:00", "17:00:00"); 
+	
 	
 	ObservableList<String> cardiologists = FXCollections.observableArrayList("Cember", "Jasińska");
 	ObservableList<String> dermatologists = FXCollections.observableArrayList("Adamczyk", "Etan");
@@ -113,6 +116,10 @@ public class ManagerController {
     @FXML
     private ComboBox<String> nv_hour_combo;
     @FXML
+    private ComboBox<String> nv_patient_last_combo;
+    @FXML
+    private Button nv_set_new_visit;
+    @FXML
     private Button nv_btn_show_available;
     @FXML
     private TableView<Schedules> nv_visits_table_view;
@@ -126,6 +133,8 @@ public class ManagerController {
     private TableColumn<Schedules, String> nv_thursday;
     @FXML
     private TableColumn<Schedules, String> nv_friday;
+    
+    
     
 	
     //general window elements for all views
@@ -284,9 +293,35 @@ public class ManagerController {
 		System.out.println(nv_visits_table_view);
 		
 		
+		
+		
+		
+		
 		nvrs.close();
-		nvstmt.close();
 		conn.close();
+	}
+	
+	@FXML
+    void setNewVisit(MouseEvent event) throws IOException, SQLException{
+	
+		String spec = nv_spec_combo.getValue();
+		String spec_last = nv_spec_last_combo.getValue();
+		String patient_last = nv_patient_last_combo.getValue();
+		LocalDate nv_visit_date = nv_visit_date_picker.getValue();
+		String hour = nv_hour_combo.getValue();
+		System.out.println(spec);
+		System.out.println(spec_last);
+		System.out.println(patient_last);
+		System.out.println(nv_visit_date);
+		System.out.println(hour);
+		
+		Connection conn = db.getConnection();
+		Statement nvstmt1 = conn.createStatement();
+		
+		
+		ResultSet nvrs1 = nvstmt1.executeQuery("INSERT ;");      //to be completed!!!!!!!!!!!!!!!!!!!!!!!!!!
+		System.out.println(nvrs1);
+		
 	}
 	
 	@FXML
@@ -440,6 +475,9 @@ public class ManagerController {
 		
 		nv_spec_combo.setItems(spec1);
 		nv_spec_last_combo.setItems(spec1last);
+		
+		nv_patient_last_combo.setItems(patient1last);
+		nv_hour_combo.setItems(hours);
 	}
 	
 }
