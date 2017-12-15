@@ -10,8 +10,7 @@ public class Visits {
 	private String visit_end;
 	
 	
-	public Visits(Integer id_visit, Integer id_patient, Integer id_spec, String visit_date, String visit_start,
-			String visit_end) {
+	public Visits(Integer id_visit, Integer id_patient, Integer id_spec, String visit_date, String visit_start, String visit_end) {
 		super();
 		this.id_visit = id_visit;
 		this.id_patient = id_patient;
@@ -21,6 +20,9 @@ public class Visits {
 		this.visit_end = visit_end;
 	}
 
+	public Visits() {
+		super();
+	}
 
 	public Integer getId_visit() {
 		return id_visit;

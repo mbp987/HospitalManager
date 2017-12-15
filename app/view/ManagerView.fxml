@@ -35,15 +35,16 @@
          <children>
             <ComboBox fx:id="spec_combo" layoutX="1.0" layoutY="20.0" onAction="#chooseLast" prefHeight="27.0" prefWidth="150.0" promptText="Speciality" />
             <ComboBox fx:id="spec_last_combo" layoutX="165.0" layoutY="20.0" prefWidth="150.0" promptText="Surname" />
-            <DatePicker fx:id="visit_date" layoutX="326.0" layoutY="20.0" promptText="Select date..." />
-            <Button fx:id="show_visits" layoutX="234.0" layoutY="61.0" mnemonicParsing="false" text="Show" />
+            <DatePicker fx:id="visit_date_picker" layoutX="326.0" layoutY="20.0" promptText="Select date..." />
+            <Button fx:id="btn_selected_visits" layoutX="234.0" layoutY="61.0" mnemonicParsing="false" onMouseClicked="#showSelectedVists" text="Show" />
             <TableView fx:id="visits_table_view" layoutX="76.0" layoutY="161.0" prefHeight="200.0" prefWidth="418.0">
               <columns>
-                <TableColumn fx:id="monday" prefWidth="75.0" text="monday" />
-                <TableColumn fx:id="tuesday" prefWidth="75.0" text="tuesday" />
-                  <TableColumn fx:id="wednesday" prefWidth="75.0" text="wednesday" />
-                  <TableColumn fx:id="thursday" prefWidth="75.0" text="thursday" />
-                  <TableColumn fx:id="friday" prefWidth="75.0" text="friday" />
+                <TableColumn fx:id="id_visit" prefWidth="70.0" text="monday" />
+                <TableColumn fx:id="v_id_patient" prefWidth="70.0" text="tuesday" />
+                  <TableColumn fx:id="v_id_spec" prefWidth="70.0" text="Patient" />
+                  <TableColumn fx:id="visit_date" prefWidth="70.0" text="thursday" />
+                  <TableColumn fx:id="visit_start" prefWidth="70.0" text="friday" />
+                  <TableColumn fx:id="visit_end" prefWidth="70.0" text="friday" />
               </columns>
             </TableView>
          </children>

@@ -5,6 +5,9 @@ import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.time.LocalDate;
+
+import com.mysql.jdbc.ResultSetMetaData;
 
 import app.database.DBConnect;
 import app.model.Patients;
@@ -32,6 +35,7 @@ public class ManagerController {
 	public ObservableList<Patients> patients;
 	public ObservableList<Specialists> specialists;
 	public ObservableList<Visits> visits;
+
 	//combo list to be rebuild
 	ObservableList<String> spec1 = FXCollections.observableArrayList("cardiologist", "dermatologist", "gynaecologist", "neurologist", "oculist", "orthopaedist", "paediatrician");
 	ObservableList<String> spec1last = FXCollections.observableArrayList("Adamczyk", "Barańska", "Cember", "Dior", "Etan", "Flis", "Grzegorczyk", "Holm", "Imo", "Jasińska");
@@ -44,6 +48,7 @@ public class ManagerController {
 	ObservableList<String> orthopaedists = FXCollections.observableArrayList("Grzegorczyk");
 	ObservableList<String> paediatricians = FXCollections.observableArrayList("Barańska", "Imo");
 	
+	//window elements for Patients
 	@FXML
 	TableView<Patients> patients_table_view;
 	@FXML
@@ -52,6 +57,8 @@ public class ManagerController {
 	TableColumn<Patients, String> pat_name;
 	@FXML
 	TableColumn<Patients, String> pat_last;
+	
+	//window elements for Specialists
 	@FXML
 	TableView<Specialists> specialists_table_view;
 	@FXML
@@ -63,38 +70,33 @@ public class ManagerController {
 	@FXML
 	TableColumn<Specialists, String> spec;
 
+	//window elements for Visits
     @FXML
-    private AnchorPane visits_view;
-	
+    AnchorPane visits_view;
+    @FXML
+    ComboBox<String> spec_combo;
 	@FXML
-    private ComboBox<String> spec_last_combo;
-
+    ComboBox<String> spec_last_combo;
     @FXML
-    private ComboBox<String> spec_combo;
-
+    Button show_visits;
     @FXML
-    private Button show_visits;
-
+    DatePicker visit_date_picker;
     @FXML
-    private DatePicker visit_date;
-
+    Button btn_selected_visits;
     @FXML
-    private TableView<Visits> visits_table_view;
-
+    TableView<Visits> visits_table_view;
     @FXML
-    private TableColumn<?, ?> monday;
-
+    TableColumn<Visits, Integer> id_visit;
     @FXML
-    private TableColumn<?, ?> tuesday;
-
+    TableColumn<Visits, Integer> v_id_patient;
     @FXML
-    private TableColumn<?, ?> wednesday;
-
+    TableColumn<Visits, Integer> v_id_spec;
     @FXML
-    private TableColumn<?, ?> thursday;
-
+    TableColumn<Visits, String> visit_date;
     @FXML
-    private TableColumn<?, ?> friday;
+    TableColumn<Visits, String> visit_start;
+    @FXML
+    TableColumn<Visits, String> visit_end;
 	
 	
 	
@@ -164,6 +166,52 @@ public class ManagerController {
     }
 	
 	@FXML
+    void showSelectedVists(MouseEvent event) throws IOException, SQLException{
+		String spec = spec_combo.getValue();
+		String spec_last = spec_last_combo.getValue();
+		System.out.println(spec);
+		System.out.println(spec_last);
+		LocalDate visit_date1 = visit_date_picker.getValue();
+		System.out.println(visit_date1);
+		
+		
+		Connection conn = db.getConnection();
+		Statement stmt = conn.createStatement();
+		ResultSet rs = stmt.executeQuery("SELECT id_visit, id_patient, id_spec, visit_date, visit_start, visit_end FROM visits LEFT JOIN specialists USING (id_spec) WHERE spec_last='"+spec_last+"' AND visit_date='"+visit_date1+"';");
+		//rsmd - used only as reference, to be removed after solving problem
+		ResultSetMetaData rsmd = (ResultSetMetaData) rs.getMetaData();
+		
+		System.out.println(rs);
+		
+		System.out.println(rsmd);
+		
+		//PROBLEM PROBLEM PROBLEM PROBLEM PROBLEM PROBLEM PROBLEM PROBLEM line 191
+		
+		while (rs.next()) {
+			visits.add(new Visits(rs.getInt(1), rs.getInt(2), rs.getInt(3), rs.getString(4), rs.getString(5), rs.getString(6)));
+		}
+	
+		System.out.println(visits);
+			
+		visits_table_view.setItems(null);
+		visits_table_view.setItems(visits);
+		System.out.println(visits);
+		System.out.println(visits_table_view);
+		
+		
+		rs.close();
+		stmt.close();
+		conn.close();
+		
+		
+		
+		
+	}
+	
+	
+
+
+	@FXML
     void chooseLast(ActionEvent event) {
 		
 		if (spec_combo.getValue().equals("cardiologist")){
@@ -232,10 +280,18 @@ public class ManagerController {
 		id_patient.setCellValueFactory(new PropertyValueFactory<Patients, Integer>("id_patient"));
 		pat_name.setCellValueFactory(new PropertyValueFactory<Patients, String>("pat_name"));
 		pat_last.setCellValueFactory(new PropertyValueFactory<Patients, String>("pat_last"));
+		
 		id_spec.setCellValueFactory(new PropertyValueFactory<Specialists, Integer>("id_spec"));
 		spec_name.setCellValueFactory(new PropertyValueFactory<Specialists, String>("spec_name"));
 		spec_last.setCellValueFactory(new PropertyValueFactory<Specialists, String>("spec_last"));
 		spec.setCellValueFactory(new PropertyValueFactory<Specialists, String>("spec"));
+		
+		id_visit.setCellValueFactory(new PropertyValueFactory<Visits, Integer>("id_visit"));
+		v_id_patient.setCellValueFactory(new PropertyValueFactory<Visits, Integer>("id_patient"));
+		v_id_spec.setCellValueFactory(new PropertyValueFactory<Visits, Integer>("id_spec"));
+		visit_date.setCellValueFactory(new PropertyValueFactory<Visits, String>("visit_date"));
+		visit_start.setCellValueFactory(new PropertyValueFactory<Visits, String>("visit_start"));
+		visit_end.setCellValueFactory(new PropertyValueFactory<Visits, String>("visit_end"));
 		
 		spec_combo.setItems(spec1);
 		spec_last_combo.setItems(spec1last);
