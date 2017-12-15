@@ -11,6 +11,7 @@ import com.mysql.jdbc.ResultSetMetaData;
 
 import app.database.DBConnect;
 import app.model.Patients;
+import app.model.Schedules;
 import app.model.Specialists;
 import app.model.Visits;
 import javafx.collections.FXCollections;
@@ -35,6 +36,7 @@ public class ManagerController {
 	public ObservableList<Patients> patients;
 	public ObservableList<Specialists> specialists;
 	public ObservableList<Visits> visits;
+	public ObservableList<Schedules> schedules;
 
 	//combo list to be rebuild
 	ObservableList<String> spec1 = FXCollections.observableArrayList("cardiologist", "dermatologist", "gynaecologist", "neurologist", "oculist", "orthopaedist", "paediatrician");
@@ -98,15 +100,43 @@ public class ManagerController {
     @FXML
     TableColumn<Visits, String> visit_end;
 	
+    
+    //window elements for New Visit
+    @FXML
+    private AnchorPane new_visit_view;
+    @FXML
+    private ComboBox<String> nv_spec_combo;
+    @FXML
+    private ComboBox<String> nv_spec_last_combo;
+    @FXML
+    private DatePicker nv_visit_date_picker;
+    @FXML
+    private ComboBox<String> nv_hour_combo;
+    @FXML
+    private Button nv_btn_show_available;
+    @FXML
+    private TableView<Schedules> nv_visits_table_view;
+    @FXML
+    private TableColumn<Schedules, String> nv_monday;
+    @FXML
+    private TableColumn<Schedules, String> nv_tuesday;
+    @FXML
+    private TableColumn<Schedules, String> nv_wednesday;
+    @FXML
+    private TableColumn<Schedules, String> nv_thursday;
+    @FXML
+    private TableColumn<Schedules, String> nv_friday;
+    
 	
-	
+    //general window elements for all views
 	@FXML
     private Button btn_patients;
 	@FXML
     private Button btn_specialists;
 	@FXML
     private Button btn_visits;
-
+	@FXML
+    private Button btn_new_visit;
 	
 	@FXML
 	void showPatients (MouseEvent event) throws IOException, SQLException{
@@ -115,6 +145,7 @@ public class ManagerController {
 		patients_table_view.setVisible(true);
 		specialists_table_view.setVisible(false);
 		visits_view.setVisible(false);
+		new_visit_view.setVisible(false);
 		
 		Connection conn = db.getConnection();
 		Statement stmt = conn.createStatement();
@@ -123,7 +154,6 @@ public class ManagerController {
 		while (rs.next()) {
 			patients.add(new Patients(rs.getInt(1), rs.getString(2), rs.getString(3)));
 		}
-		System.out.println(patients);
 		
 		patients_table_view.setItems(null);
 		patients_table_view.setItems(patients);
@@ -137,8 +167,8 @@ public class ManagerController {
 		specialists = FXCollections.observableArrayList();
 		patients_table_view.setVisible(false);
 		specialists_table_view.setVisible(true);
-		
 		visits_view.setVisible(false);
+		new_visit_view.setVisible(false);
 		
 		Connection conn = db.getConnection();
 		Statement stmt = conn.createStatement();
@@ -147,7 +177,6 @@ public class ManagerController {
 		while (rs.next()) {
 			specialists.add(new Specialists(rs.getInt(1), rs.getString(2), rs.getString(3), rs.getString(4)));
 		}
-		System.out.println(patients);
 		
 		specialists_table_view.setItems(null);
 		specialists_table_view.setItems(specialists);
@@ -161,7 +190,7 @@ public class ManagerController {
 		patients_table_view.setVisible(false);
 		specialists_table_view.setVisible(false);
 		visits_view.setVisible(true);
-		visits_table_view.setVisible(true);
+		new_visit_view.setVisible(false);
 
     }
 	
@@ -185,7 +214,7 @@ public class ManagerController {
 		
 		System.out.println(rsmd);
 		
-		//PROBLEM PROBLEM PROBLEM PROBLEM PROBLEM PROBLEM PROBLEM PROBLEM line 191
+		//PROBLEM PROBLEM PROBLEM PROBLEM PROBLEM PROBLEM PROBLEM PROBLEM line 220
 		
 		while (rs.next()) {
 			visits.add(new Visits(rs.getInt(1), rs.getInt(2), rs.getInt(3), rs.getString(4), rs.getString(5), rs.getString(6)));
@@ -209,7 +238,120 @@ public class ManagerController {
 	}
 	
 	
+	
+	@FXML
+	void showNewVisit(MouseEvent event) throws IOException, SQLException{
+		patients_table_view.setVisible(false);
+		specialists_table_view.setVisible(false);
+		visits_view.setVisible(false);
+		new_visit_view.setVisible(true);
+		
+		
+	}
 
+	
+	@FXML
+    void showSelectedSchedule(MouseEvent event) throws IOException, SQLException{
+		
+		String spec = nv_spec_combo.getValue();
+		String spec_last = nv_spec_last_combo.getValue();
+		System.out.println(spec);
+		System.out.println(spec_last);
+		
+		Connection conn = db.getConnection();
+		Statement nvstmt = conn.createStatement();
+		//ResultSet nvrs = nvstmt.executeQuery("SELECT mon_start, mon_end, tue_start, tue_end, wed_start, wed_end, thu_start, thu_end, fri_start, fri_end FROM schedules LEFT JOIN specialists USING (id_spec) WHERE spec_last='"+spec_last+"';");
+		ResultSet nvrs = nvstmt.executeQuery("SELECT mon_start, mon_end, tue_start, tue_end, wed_start FROM schedules LEFT JOIN specialists USING (id_spec) WHERE spec_last='"+spec_last+"';");
+		
+		System.out.println(nvrs);
+		System.out.println(nvrs.toString());
+		
+		
+		//PROBLEM PROBLEM PROBLEM PROBLEM PROBLEM PROBLEM PROBLEM PROBLEM line 274
+
+		
+		while (nvrs.next()) {
+		//	schedules.add(new Schedules(null, nvrs.getString(1), nvrs.getString(2), nvrs.getString(3), nvrs.getString(4), nvrs.getString(5), nvrs.getString(6) ,nvrs.getString(7), nvrs.getString(8), nvrs.getString(9), nvrs.getString(10)));
+			schedules.add(new Schedules(null, nvrs.getString(1), nvrs.getString(2), nvrs.getString(3), nvrs.getString(4), nvrs.getString(5), null, null, null, null, null));
+			
+		}
+	
+		System.out.println(visits);
+			
+		nv_visits_table_view.setItems(null);
+		nv_visits_table_view.setItems(schedules);
+		System.out.println(schedules);
+		System.out.println(nv_visits_table_view);
+		
+		
+		nvrs.close();
+		nvstmt.close();
+		conn.close();
+	}
+	
+	@FXML
+    void nvChooseLast(ActionEvent event) {
+		
+		if (nv_spec_combo.getValue().equals("cardiologist")){
+			nvRefresh();
+		}
+		else if(nv_spec_combo.getValue().equals("dermatologist")){
+			nvRefresh();
+		}
+		else if(nv_spec_combo.getValue().equals("gynaecologist")){
+			nvRefresh();
+		}
+		else if(nv_spec_combo.getValue().equals("neurologist")){
+			nvRefresh();
+		}
+		else if(nv_spec_combo.getValue().equals("oculist")){
+			nvRefresh();
+		}
+		else if(nv_spec_combo.getValue().equals("orthopaedist")){
+			nvRefresh();
+		}
+		else if(nv_spec_combo.getValue().equals("paediatrician")){
+			nvRefresh();
+		}
+		else {
+			nv_spec_last_combo.setItems(spec1last);
+		}	
+    }
+	
+	public void nvRefresh() {
+		if (nv_spec_combo.getValue().equals("cardiologist")){
+			nv_spec_last_combo.setValue("Cember");
+			nv_spec_last_combo.setItems(cardiologists);
+		}
+		else if (nv_spec_combo.getValue().equals("dermatologist")){
+			nv_spec_last_combo.setValue("Adamczyk");
+			nv_spec_last_combo.setItems(dermatologists);
+		}	
+		else if (nv_spec_combo.getValue().equals("gynaecologist")){
+			nv_spec_last_combo.setValue("Holm");
+			nv_spec_last_combo.setItems(gynaecologists);
+		}	
+		else if (nv_spec_combo.getValue().equals("neurologist")){
+			nv_spec_last_combo.setValue("Dior");
+			nv_spec_last_combo.setItems(neurologists);
+		}	
+		else if (nv_spec_combo.getValue().equals("oculist")){
+			nv_spec_last_combo.setValue("Flis");
+			nv_spec_last_combo.setItems(oculists);
+		}	
+		else if (nv_spec_combo.getValue().equals("orthopaedist")){
+			nv_spec_last_combo.setValue("Grzegorczyk");
+			nv_spec_last_combo.setItems(orthopaedists);
+		}	
+		else if (nv_spec_combo.getValue().equals("paediatrician")){
+			nv_spec_last_combo.setValue("Barańska");
+			nv_spec_last_combo.setItems(paediatricians);
+		}	
+		else {
+			nv_spec_last_combo.setItems(spec1last);
+		}
+	
+	}
 
 	@FXML
     void chooseLast(ActionEvent event) {
@@ -295,6 +437,9 @@ public class ManagerController {
 		
 		spec_combo.setItems(spec1);
 		spec_last_combo.setItems(spec1last);
+		
+		nv_spec_combo.setItems(spec1);
+		nv_spec_last_combo.setItems(spec1last);
 	}
 	
 }

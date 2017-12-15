@@ -12,7 +12,7 @@
 <Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="661.0" xmlns="http://javafx.com/javafx/9" xmlns:fx="http://javafx.com/fxml/1" fx:controller="app.controller.ManagerController">
    <children>
       <Separator layoutX="120.0" orientation="VERTICAL" prefHeight="400.0" prefWidth="0.0" />
-      <Button layoutX="10.0" layoutY="160.0" mnemonicParsing="false" prefHeight="50.0" prefWidth="100.0" text="New Visit" />
+      <Button fx:id="btn_new_visit" layoutX="10.0" layoutY="160.0" mnemonicParsing="false" onMouseClicked="#showNewVisit" prefHeight="50.0" prefWidth="100.0" text="New Visit" />
       <Button fx:id="btn_visits" layoutX="10.0" layoutY="220.0" mnemonicParsing="false" onMouseClicked="#showVisits" prefHeight="50.0" prefWidth="100.0" text="Visits" />
       <Button fx:id="btn_specialists" layoutX="10.0" layoutY="280.0" mnemonicParsing="false" onMouseClicked="#showSpecialists" prefHeight="50.0" prefWidth="100.0" text="Specialists" />
       <Button fx:id="btn_patients" layoutX="10.0" layoutY="340.0" mnemonicParsing="false" onMouseClicked="#showPatients" prefHeight="50.0" prefWidth="100.0" text="Patients" />
@@ -47,6 +47,25 @@
                   <TableColumn fx:id="visit_end" prefWidth="70.0" text="friday" />
               </columns>
             </TableView>
+         </children>
+      </AnchorPane>
+      <AnchorPane fx:id="new_visit_view" layoutX="130.0" layoutY="14.0" prefHeight="375.0" prefWidth="520.0" visible="false">
+         <children>
+            <ComboBox fx:id="nv_spec_combo" layoutX="1.0" layoutY="7.0" onAction="#nvChooseLast" prefHeight="27.0" prefWidth="150.0" promptText="Speciality" />
+            <ComboBox fx:id="nv_spec_last_combo" layoutX="165.0" layoutY="7.0" prefWidth="150.0" promptText="Surname" />
+            <Button fx:id="nv_btn_show_available" layoutX="328.0" layoutY="7.0" mnemonicParsing="false" onMouseClicked="#showSelectedSchedule" prefHeight="27.0" prefWidth="183.0" text="Show weekly schedule" />
+            <TableView fx:id="nv_visits_table_view" layoutX="51.0" layoutY="88.0" prefHeight="200.0" prefWidth="418.0">
+               <columns>
+                  <TableColumn fx:id="nv_monday" text="Monday" />
+                  <TableColumn fx:id="nv_tuesday" text="Tuesday" />
+                  <TableColumn fx:id="nv_wednesday" text="Wednesday" />
+                  <TableColumn fx:id="nv_thursday" text="Thusday" />
+                  <TableColumn fx:id="nv_friday" text="Friday" />
+               </columns>
+            </TableView>
+            <DatePicker fx:id="nv_visit_date_picker" layoutX="1.0" layoutY="325.0" prefHeight="27.0" prefWidth="150.0" promptText="Select date..." />
+            <ComboBox fx:id="nv_hour_combo" layoutX="185.0" layoutY="325.0" prefWidth="150.0" promptText="Select hour..." />
+            <Button layoutX="361.0" layoutY="325.0" mnemonicParsing="false" text="Add new visit" />
          </children>
       </AnchorPane>
    </children>
