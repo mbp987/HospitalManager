@@ -2,12 +2,11 @@ package app.controller;
 
 import java.io.IOException;
 import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.time.LocalDate;
-
-import com.mysql.jdbc.ResultSetMetaData;
 
 import app.database.DBConnect;
 import app.model.Patients;
@@ -38,10 +37,10 @@ public class ManagerController {
 	public ObservableList<Visits> visits;
 	public ObservableList<Schedules> schedules;
 
-	//combo list to be rebuild
-	ObservableList<String> spec1 = FXCollections.observableArrayList("cardiologist", "dermatologist", "gynaecologist", "neurologist", "oculist", "orthopaedist", "paediatrician");
-	ObservableList<String> spec1last = FXCollections.observableArrayList("Adamczyk", "Barańska", "Cember", "Dior", "Etan", "Flis", "Grzegorczyk", "Holm", "Imo", "Jasińska");
-	ObservableList<String> patient1last = FXCollections.observableArrayList("Mouse", "Duck", "Szary", "Baggins", "Wayne", "White", "Kent", "Smurf", "America", "Bravo");
+	//used for comboboxes
+	ObservableList<String> spec1 = FXCollections.observableArrayList();    
+	ObservableList<String> spec1last = FXCollections.observableArrayList();   
+	ObservableList<String> patient1last = FXCollections.observableArrayList();   
 	ObservableList<String> hours = FXCollections.observableArrayList("08:00:00", "09:00:00", "10:00:00", "11:00:00", "12:00:00", "13:00:00", "14:00:00", "15:00:00", "16:00:00", "17:00:00"); 
 	
 	
@@ -77,31 +76,31 @@ public class ManagerController {
 
 	//window elements for Visits
     @FXML
-    AnchorPane visits_view;
+    private AnchorPane visits_view;
     @FXML
-    ComboBox<String> spec_combo;
+    private ComboBox<String> spec_combo;
 	@FXML
-    ComboBox<String> spec_last_combo;
+	private ComboBox<String> spec_last_combo;
     @FXML
-    Button show_visits;
+    private Button show_visits;
     @FXML
-    DatePicker visit_date_picker;
+    private DatePicker visit_date_picker;
     @FXML
-    Button btn_selected_visits;
+    private Button btn_selected_visits;
     @FXML
-    TableView<Visits> visits_table_view;
+    private TableView<Visits> visits_table_view;
     @FXML
-    TableColumn<Visits, Integer> id_visit;
+    private TableColumn<Visits, Integer> id_visit;
     @FXML
-    TableColumn<Visits, Integer> v_id_patient;
+    private TableColumn<Visits, Integer> v_id_patient;
     @FXML
-    TableColumn<Visits, Integer> v_id_spec;
+    private TableColumn<Visits, Integer> v_id_spec;
     @FXML
-    TableColumn<Visits, String> visit_date;
+    private TableColumn<Visits, String> visit_date;
     @FXML
-    TableColumn<Visits, String> visit_start;
+    private TableColumn<Visits, String> visit_start;
     @FXML
-    TableColumn<Visits, String> visit_end;
+    private TableColumn<Visits, String> visit_end;
 	
     
     //window elements for New Visit
@@ -212,37 +211,39 @@ public class ManagerController {
 		LocalDate visit_date1 = visit_date_picker.getValue();
 		System.out.println(visit_date1);
 		
+		visits = FXCollections.observableArrayList();
 		
-		Connection conn = db.getConnection();
-		Statement stmt = conn.createStatement();
-		ResultSet rs = stmt.executeQuery("SELECT id_visit, id_patient, id_spec, visit_date, visit_start, visit_end FROM visits LEFT JOIN specialists USING (id_spec) WHERE spec_last='"+spec_last+"' AND visit_date='"+visit_date1+"';");
-		//rsmd - used only as reference, to be removed after solving problem
-		ResultSetMetaData rsmd = (ResultSetMetaData) rs.getMetaData();
 		
-		System.out.println(rs);
+/*		CHECK CHECK CHECK CHECK CHECK CHECK CHECK CHECK CHECK CHECK 
+		ps = conn.prepareStatement("SELECT id_visit, id_patient, id_spec, visit_date, visit_start, visit_end FROM visits LEFT JOIN specialists USING (id_spec) WHERE spec_last= ? AND visit_date= ? ;");
+		ps.setString(1, spec_last);
+		ps.setString(2, visit_date);
+		ResultSet rs = ps.executeQuery();
+		while(rs.next()){
+			Visits sc = new Visits(rs.getInt(1), 
+										rs.getInt(2), 
+										rs.getInt(3), 
+										rs.getString(4), 
+										rs.getString(5), 
+										rs.getString(6), 
 		
-		System.out.println(rsmd);
-		
-		//PROBLEM PROBLEM PROBLEM PROBLEM PROBLEM PROBLEM PROBLEM PROBLEM line 220
-		
-		while (rs.next()) {
-			visits.add(new Visits(rs.getInt(1), rs.getInt(2), rs.getInt(3), rs.getString(4), rs.getString(5), rs.getString(6)));
-		}
+		//ResultSet rs = stmt.executeQuery("SELECT id_visit, id_patient, id_spec, visit_date, visit_start, visit_end FROM visits LEFT JOIN specialists USING (id_spec) WHERE spec_last='"+spec_last+"' AND visit_date='"+visit_date1+"';");
 	
-		System.out.println(visits);
-			
-		visits_table_view.setItems(null);
-		visits_table_view.setItems(visits);
-		System.out.println(visits);
-		System.out.println(visits_table_view);
+		
+		id_visit.setCellValueFactory(new PropertyValueFactory<Visits, Integer>("id_visit"));
+		v_id_patient.setCellValueFactory(new PropertyValueFactory<Visits, Integer>("id_patient"));
+		v_id_spec.setCellValueFactory(new PropertyValueFactory<Visits, Integer>("id_spec"));
+		visit_date.setCellValueFactory(new PropertyValueFactory<Visits, String>("visit_date"));
+		visit_start.setCellValueFactory(new PropertyValueFactory<Visits, String>("visit_start"));
+		visit_end.setCellValueFactory(new PropertyValueFactory<Visits, String>("visit_end"));
+		
+		}
+		//rs.close();
+		//stmt.close();
+		//conn.close();
 		
 		
-		rs.close();
-		stmt.close();
-		conn.close();
-		
-		
-		
+*/		
 		
 	}
 	
@@ -266,39 +267,35 @@ public class ManagerController {
 		String spec_last = nv_spec_last_combo.getValue();
 		System.out.println(spec);
 		System.out.println(spec_last);
+		schedules = FXCollections.observableArrayList();
 		
-		Connection conn = db.getConnection();
-		Statement nvstmt = conn.createStatement();
-		//ResultSet nvrs = nvstmt.executeQuery("SELECT mon_start, mon_end, tue_start, tue_end, wed_start, wed_end, thu_start, thu_end, fri_start, fri_end FROM schedules LEFT JOIN specialists USING (id_spec) WHERE spec_last='"+spec_last+"';");
-		ResultSet nvrs = nvstmt.executeQuery("SELECT mon_start, mon_end, tue_start, tue_end, wed_start FROM schedules LEFT JOIN specialists USING (id_spec) WHERE spec_last='"+spec_last+"';");
-		
-		System.out.println(nvrs);
-		System.out.println(nvrs.toString());
-		
-		
-		//PROBLEM PROBLEM PROBLEM PROBLEM PROBLEM PROBLEM PROBLEM PROBLEM line 274
-
-		
-		while (nvrs.next()) {
-		//	schedules.add(new Schedules(null, nvrs.getString(1), nvrs.getString(2), nvrs.getString(3), nvrs.getString(4), nvrs.getString(5), nvrs.getString(6) ,nvrs.getString(7), nvrs.getString(8), nvrs.getString(9), nvrs.getString(10)));
-			schedules.add(new Schedules(null, nvrs.getString(1), nvrs.getString(2), nvrs.getString(3), nvrs.getString(4), nvrs.getString(5), null, null, null, null, null));
-			
+		ps = conn.prepareStatement("SELECT mon_start, mon_end, tue_start, tue_end, wed_start, wed_end, thu_start, thu_end, fri_start, fri_end FROM schedules LEFT JOIN specialists USING (id_spec) WHERE spec_last= ? ");
+		ps.setString(1, spec_last);
+		ResultSet rs = ps.executeQuery();
+		while(rs.next()){
+			Schedules sc = new Schedules(rs.getString(1), 
+										rs.getString(2), 
+										rs.getString(3), 
+										rs.getString(4), 
+										rs.getString(5), 
+										rs.getString(6), 
+										rs.getString(7), 
+										rs.getString(8), 
+										rs.getString(9), 
+										rs.getString(10));
+			schedules.add(sc);
 		}
-	
-		System.out.println(visits);
-			
-		nv_visits_table_view.setItems(null);
+		nv_monday.setCellValueFactory(new PropertyValueFactory<Schedules, String>("mon_start"));
+		nv_tuesday.setCellValueFactory(new PropertyValueFactory<Schedules, String>("tue_start"));
+		nv_wednesday.setCellValueFactory(new PropertyValueFactory<Schedules, String>("wed_start"));
+		nv_thursday.setCellValueFactory(new PropertyValueFactory<Schedules, String>("thu_start"));
+		nv_friday.setCellValueFactory(new PropertyValueFactory<Schedules, String>("fri_start"));
 		nv_visits_table_view.setItems(schedules);
-		System.out.println(schedules);
-		System.out.println(nv_visits_table_view);
 		
 		
 		
-		
-		
-		
-		nvrs.close();
-		conn.close();
+	
+		//conn.close();
 	}
 	
 	@FXML
@@ -452,8 +449,12 @@ public class ManagerController {
 	
 	}
 	
-	public void initialize() {
+	PreparedStatement ps;
+	PreparedStatement ps2;
+	Connection conn;
+	public void initialize() throws SQLException {
 		db = new DBConnect();
+		conn = db.getConnection();
 		id_patient.setCellValueFactory(new PropertyValueFactory<Patients, Integer>("id_patient"));
 		pat_name.setCellValueFactory(new PropertyValueFactory<Patients, String>("pat_name"));
 		pat_last.setCellValueFactory(new PropertyValueFactory<Patients, String>("pat_last"));
@@ -463,12 +464,16 @@ public class ManagerController {
 		spec_last.setCellValueFactory(new PropertyValueFactory<Specialists, String>("spec_last"));
 		spec.setCellValueFactory(new PropertyValueFactory<Specialists, String>("spec"));
 		
-		id_visit.setCellValueFactory(new PropertyValueFactory<Visits, Integer>("id_visit"));
-		v_id_patient.setCellValueFactory(new PropertyValueFactory<Visits, Integer>("id_patient"));
-		v_id_spec.setCellValueFactory(new PropertyValueFactory<Visits, Integer>("id_spec"));
-		visit_date.setCellValueFactory(new PropertyValueFactory<Visits, String>("visit_date"));
-		visit_start.setCellValueFactory(new PropertyValueFactory<Visits, String>("visit_start"));
-		visit_end.setCellValueFactory(new PropertyValueFactory<Visits, String>("visit_end"));
+		
+		
+		//setting values for spec1 and spec1last used in comboboxes
+		ps = conn.prepareStatement("SELECT spec, spec_last FROM specialists");
+		ResultSet rs = ps.executeQuery();
+		
+		while(rs.next()){
+			spec1.add(rs.getString("spec"));
+			spec1last.add(rs.getString("spec_last"));
+		}
 		
 		spec_combo.setItems(spec1);
 		spec_last_combo.setItems(spec1last);
@@ -476,7 +481,18 @@ public class ManagerController {
 		nv_spec_combo.setItems(spec1);
 		nv_spec_last_combo.setItems(spec1last);
 		
+		//setting values for  and patient1last used in combobox
+		ps2 = conn.prepareStatement("SELECT pat_last FROM patients");
+		ResultSet rs2 = ps2.executeQuery();
+		
+		while(rs2.next()){
+			patient1last.add(rs2.getString("pat_last"));
+		
+		}
+		
 		nv_patient_last_combo.setItems(patient1last);
+		
+		//stiff values for hours combobox
 		nv_hour_combo.setItems(hours);
 	}
 	

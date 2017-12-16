@@ -2,7 +2,6 @@ package app.model;
 
 public class Schedules {
 
-	private Integer id_spec;
 	private String mon_start;
 	private String mon_end;
 	private String tue_start;
@@ -14,10 +13,9 @@ public class Schedules {
 	private String fri_start;
 	private String fri_end;
 	
-	public Schedules(Integer id_spec, String mon_start, String mon_end, String tue_start, String tue_end,
+	public Schedules(String mon_start, String mon_end, String tue_start, String tue_end,
 			String wed_start, String wed_end, String thu_start, String thu_end, String fri_start, String fri_end) {
 		super();
-		this.id_spec = id_spec;
 		this.mon_start = mon_start;
 		this.mon_end = mon_end;
 		this.tue_start = tue_start;
@@ -37,7 +35,7 @@ public class Schedules {
 	}
 
 	
-
+/*
 	public Integer getId_spec() {
 		return id_spec;
 	}
@@ -45,7 +43,7 @@ public class Schedules {
 	public void setId_spec(Integer id_spec) {
 		this.id_spec = id_spec;
 	}
-
+*/
 	public String getMon_start() {
 		return mon_start;
 	}
