@@ -6,18 +6,17 @@ public class Visits {
 	private Integer id_patient;
 	private Integer id_spec;
 	private String visit_date;
-	private String visit_start;
-	private String visit_end;
+	private Integer visit_term;
 	
 	
-	public Visits(Integer id_visit, Integer id_patient, Integer id_spec, String visit_date, String visit_start, String visit_end) {
+	public Visits(Integer id_visit, Integer id_patient, Integer id_spec, String visit_date, Integer visit_term) {
 		super();
 		this.id_visit = id_visit;
 		this.id_patient = id_patient;
 		this.id_spec = id_spec;
 		this.visit_date = visit_date;
-		this.visit_start = visit_start;
-		this.visit_end = visit_end;
+		this.visit_term = visit_term;
+
 	}
 
 	public Visits() {
@@ -48,19 +47,12 @@ public class Visits {
 	public void setVisit_date(String visit_date) {
 		this.visit_date = visit_date;
 	}
-	public String getVisit_start() {
-		return visit_start;
+	public Integer getVisit_start() {
+		return visit_term;
 	}
-	public void setVisit_start(String visit_start) {
-		this.visit_start = visit_start;
+	public void setVisit_start(Integer visit_term) {
+		this.visit_term = visit_term;
 	}
-	public String getVisit_end() {
-		return visit_end;
-	}
-	public void setVisit_end(String visit_end) {
-		this.visit_end = visit_end;
-	}
-	
 }
 
 

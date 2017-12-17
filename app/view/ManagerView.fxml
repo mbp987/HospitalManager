@@ -3,6 +3,7 @@
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.DatePicker?>
+<?import javafx.scene.control.Label?>
 <?import javafx.scene.control.Separator?>
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
@@ -33,40 +34,47 @@
       </TableView>
       <AnchorPane fx:id="visits_view" layoutX="130.0" layoutY="14.0" prefHeight="375.0" prefWidth="520.0" visible="false">
          <children>
-            <ComboBox fx:id="spec_combo" layoutX="1.0" layoutY="20.0" onAction="#chooseLast" prefHeight="27.0" prefWidth="150.0" promptText="Speciality" />
-            <ComboBox fx:id="spec_last_combo" layoutX="165.0" layoutY="20.0" prefWidth="150.0" promptText="Surname" />
-            <DatePicker fx:id="visit_date_picker" layoutX="326.0" layoutY="20.0" promptText="Select date..." />
-            <Button fx:id="btn_selected_visits" layoutX="234.0" layoutY="61.0" mnemonicParsing="false" onMouseClicked="#showSelectedVists" text="Show" />
-            <TableView fx:id="visits_table_view" layoutX="76.0" layoutY="161.0" prefHeight="200.0" prefWidth="418.0">
+            <ComboBox fx:id="spec_combo" layoutX="1.0" onAction="#chooseLast" prefHeight="27.0" prefWidth="150.0" promptText="Speciality" />
+            <ComboBox fx:id="spec_last_combo" layoutX="165.0" prefWidth="150.0" promptText="Surname" />
+            <DatePicker fx:id="visit_date_picker" layoutX="326.0" promptText="Select date..." />
+            <Button fx:id="btn_selected_visits" layoutX="234.0" layoutY="38.0" mnemonicParsing="false" onMouseClicked="#showSelectedVists" text="Show" />
+            <TableView fx:id="visits_table_view" layoutY="76.0" prefHeight="299.0" prefWidth="520.0">
               <columns>
-                <TableColumn fx:id="id_visit" prefWidth="70.0" text="monday" />
-                <TableColumn fx:id="v_id_patient" prefWidth="70.0" text="tuesday" />
-                  <TableColumn fx:id="v_id_spec" prefWidth="70.0" text="Patient" />
-                  <TableColumn fx:id="visit_date" prefWidth="70.0" text="thursday" />
-                  <TableColumn fx:id="visit_start" prefWidth="70.0" text="friday" />
-                  <TableColumn fx:id="visit_end" prefWidth="70.0" text="friday" />
+                <TableColumn fx:id="id_visit" prefWidth="104.0" text="ID Visit" />
+                <TableColumn fx:id="v_id_patient" prefWidth="104.0" text="ID Patient" />
+                  <TableColumn fx:id="v_id_spec" prefWidth="104.0" text="ID Specialist" />
+                  <TableColumn fx:id="visit_date" prefWidth="104.0" text="Date" />
+                  <TableColumn fx:id="visit_term" prefWidth="102.0" text="Term" />
               </columns>
             </TableView>
          </children>
       </AnchorPane>
-      <AnchorPane fx:id="new_visit_view" layoutX="130.0" layoutY="14.0" prefHeight="375.0" prefWidth="520.0" visible="false">
+      <AnchorPane fx:id="new_visit_view" layoutX="130.0" layoutY="14.0" prefHeight="370.0" prefWidth="520.0" visible="false">
          <children>
             <ComboBox fx:id="nv_spec_combo" layoutX="1.0" layoutY="7.0" onAction="#nvChooseLast" prefHeight="27.0" prefWidth="150.0" promptText="Speciality" />
             <ComboBox fx:id="nv_spec_last_combo" layoutX="165.0" layoutY="7.0" prefWidth="150.0" promptText="Surname" />
-            <Button fx:id="nv_btn_show_available" layoutX="328.0" layoutY="7.0" mnemonicParsing="false" onMouseClicked="#showSelectedSchedule" prefHeight="27.0" prefWidth="183.0" text="Show weekly schedule" />
-            <DatePicker fx:id="nv_visit_date_picker" layoutX="178.0" layoutY="266.0" prefHeight="27.0" prefWidth="150.0" promptText="Select date..." />
-            <ComboBox fx:id="nv_hour_combo" layoutX="345.0" layoutY="266.0" prefWidth="150.0" promptText="Select hour..." />
-            <TableView fx:id="nv_visits_table_view" layoutY="88.0" prefHeight="111.0" prefWidth="520.0">
+            <Button fx:id="nv_btn_show_available" layoutX="329.0" layoutY="7.0" mnemonicParsing="false" onMouseClicked="#showSelectedSchedule" prefHeight="27.0" prefWidth="187.0" text="Show weekly schedule" />
+            <DatePicker fx:id="nv_visit_date_picker" layoutX="165.0" layoutY="305.0" prefHeight="27.0" prefWidth="150.0" promptText="Select date..." />
+            <ComboBox fx:id="nv_hour_combo" layoutX="329.0" layoutY="305.0" prefHeight="27.0" prefWidth="187.0" promptText="Select hour..." />
+            <TableView fx:id="nv_visits_table_view" layoutX="65.0" layoutY="49.0" prefHeight="228.0" prefWidth="452.0">
                <columns>
-                  <TableColumn fx:id="nv_monday" prefWidth="104.0" text="Monday" />
-                  <TableColumn fx:id="nv_tuesday" prefWidth="104.0" text="Tuesday" />
-                  <TableColumn fx:id="nv_wednesday" prefWidth="104.0" text="Wednesday" />
-                  <TableColumn fx:id="nv_thursday" prefWidth="104.0" text="Thusday" />
-                  <TableColumn fx:id="nv_friday" prefWidth="104.0" text="Friday" />
+                  <TableColumn fx:id="nv_monday" prefWidth="90.0" text="Monday" />
+                  <TableColumn fx:id="nv_tuesday" prefWidth="90.0" text="Tuesday" />
+                  <TableColumn fx:id="nv_wednesday" prefWidth="90.0" text="Wednesday" />
+                  <TableColumn fx:id="nv_thursday" prefWidth="90.0" text="Thusday" />
+                  <TableColumn fx:id="nv_friday" prefWidth="90.0" text="Friday" />
                </columns>
             </TableView>
-            <Button fx:id="nv_set_new_visit" layoutX="394.0" layoutY="302.0" mnemonicParsing="false" onMouseClicked="#setNewVisit" text="Add new visit" />
-            <ComboBox fx:id="nv_patient_last_combo" layoutX="14.0" layoutY="266.0" prefWidth="150.0" promptText="Patient" />
+            <Button fx:id="nv_set_new_visit" layoutX="415.0" layoutY="343.0" mnemonicParsing="false" onMouseClicked="#setNewVisit" text="Add new visit" />
+            <ComboBox fx:id="nv_patient_last_combo" layoutX="1.0" layoutY="305.0" prefWidth="150.0" promptText="Patient" />
+            <Label layoutX="21.0" layoutY="85.0" text="8:00" />
+            <Label layoutX="21.0" layoutY="110.0" text="9:00" />
+            <Label layoutX="15.0" layoutY="135.0" text="10:00" />
+            <Label layoutX="17.0" layoutY="160.0" text="11:00" />
+            <Label layoutX="15.0" layoutY="185.0" text="12:00" />
+            <Label layoutX="15.0" layoutY="210.0" text="13:00" />
+            <Label layoutX="15.0" layoutY="235.0" text="14:00" />
+            <Label layoutX="15.0" layoutY="260.0" text="15:00" />
          </children>
       </AnchorPane>
    </children>
