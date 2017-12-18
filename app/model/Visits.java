@@ -16,7 +16,6 @@ public class Visits {
 		this.id_spec = id_spec;
 		this.visit_date = visit_date;
 		this.visit_term = visit_term;
-
 	}
 
 	public Visits() {

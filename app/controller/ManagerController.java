@@ -201,12 +201,16 @@ public class ManagerController {
 	
 	@FXML
     void showSelectedVists(MouseEvent event) throws IOException, SQLException{
+		
 		String spec = spec_combo.getValue();
 		String spec_last = spec_last_combo.getValue();
 		System.out.println(spec);
 		System.out.println(spec_last);
 		LocalDate visit_date1 = visit_date_picker.getValue();
 		System.out.println(visit_date1);
+		//PROBLEM PROBLEM PROBLEM PROBLEM PROBLEM PROBLEM PROBLEM PROBLEM PROBLEM PROBLEM PROBLEM PROBLEM PROBLEM PROBLEM PROBLEM 
+		//String visit_term = (nv_hour_combo.getValue()).toString();
+		System.out.println(visit_term);
 		
 		visits = FXCollections.observableArrayList();
 		
@@ -217,33 +221,22 @@ public class ManagerController {
 		ps.setString(2, visit_date1.toString());
 		ResultSet rs = ps.executeQuery();
 		while(rs.next()){
-			Visits sc = new Visits(rs.getInt(1), 
-										rs.getInt(2), 
-										rs.getInt(3), 
-										rs.getString(4), 
-										rs.getInt(5));
+			visits.add(new Visits(rs.getInt(1), rs.getInt(2), rs.getInt(3), rs.getString(4), rs.getInt(5)));
+		}
 		
+		
+		visits_table_view.setItems(null);
+		visits_table_view.setItems(visits);
+		System.out.println(visits);
+		System.out.println(visits_table_view);
 		
 			
-		//ResultSet rs = stmt.executeQuery("SELECT id_visit, id_patient, id_spec, visit_date, visit_start, visit_end FROM visits LEFT JOIN specialists USING (id_spec) WHERE spec_last='"+spec_last+"' AND visit_date='"+visit_date1+"';");
-	
 		
 		id_visit.setCellValueFactory(new PropertyValueFactory<Visits, Integer>("id_visit"));
 		v_id_patient.setCellValueFactory(new PropertyValueFactory<Visits, Integer>("id_patient"));
 		v_id_spec.setCellValueFactory(new PropertyValueFactory<Visits, Integer>("id_spec"));
 		visit_date.setCellValueFactory(new PropertyValueFactory<Visits, String>("visit_date"));
-		visit_term.setCellValueFactory(new PropertyValueFactory<Visits, Integer>("visit_term"));
-	
-		
-		}
-/*
-		//rs.close();
-		//stmt.close();
-		//conn.close();
-		
-		
-*/		
-		
+		visit_term.setCellValueFactory(new PropertyValueFactory<Visits, Integer>("visit_term"));	
 	}
 	
 	
@@ -254,8 +247,6 @@ public class ManagerController {
 		specialists_table_view.setVisible(false);
 		visits_view.setVisible(false);
 		new_visit_view.setVisible(true);
-		
-		
 	}
 
 	
@@ -285,8 +276,6 @@ public class ManagerController {
 	nv_thursday.setCellValueFactory(new PropertyValueFactory<Schedules, String>("thu"));
 	nv_friday.setCellValueFactory(new PropertyValueFactory<Schedules, String>("fri"));
 	nv_visits_table_view.setItems(schedules);
-	// nvrs.close();
-	// conn.close();
 	}
 	
 	
@@ -328,15 +317,15 @@ public class ManagerController {
 		ps1.setString(1, patient_last);
 		ResultSet id_s = ps1.executeQuery();
 		if(id_s.next()) {
-		id_spec_SQL = id_s.getInt("id_patient");
-		System.out.println(id_spec_SQL);
+		id_p_SQL = id_s.getInt("id_patient");
+		System.out.println(id_p_SQL);
 		}
 		ps2 = conn.prepareStatement("select id_spec from specialists where spec_last = ?");
 		ps2.setString(1, spec_last);
 		ResultSet id_p = ps2.executeQuery();
 		if(id_p.next()) {
-		id_p_SQL = id_p.getInt("id_spec");
-		System.out.println(id_p_SQL);
+		id_spec_SQL = id_p.getInt("id_spec");
+		System.out.println(id_spec_SQL);
 		}
 
 		ps3 = conn.prepareStatement("INSERT into visits(id_patient, id_spec, visit_date, visit_term) VALUES(?,?,?,?)");// + patient_last + ", " + spec_last + ", " + nv_visit_date + ", " + hour + "; ");
@@ -490,7 +479,12 @@ public class ManagerController {
 		spec_last.setCellValueFactory(new PropertyValueFactory<Specialists, String>("spec_last"));
 		spec.setCellValueFactory(new PropertyValueFactory<Specialists, String>("spec"));
 		
-		
+		id_visit.setCellValueFactory(new PropertyValueFactory<Visits, Integer>("id_visit"));
+		v_id_patient.setCellValueFactory(new PropertyValueFactory<Visits, Integer>("id_patient"));
+		v_id_spec.setCellValueFactory(new PropertyValueFactory<Visits, Integer>("id_spec"));
+		visit_date.setCellValueFactory(new PropertyValueFactory<Visits, String>("visit_date"));
+		//visit_term.setCellValueFactory(new PropertyValueFactory<Visits, String>("visit_term"));	
+	
 		
 		//setting values for spec1 and spec1last used in comboboxes
 		ps = conn.prepareStatement("SELECT DISTINCT spec FROM specialists");
