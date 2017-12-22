@@ -23,6 +23,7 @@ import javafx.scene.control.ComboBox;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
+import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
@@ -55,6 +56,8 @@ public class ManagerController {
 	
 	//window elements for Patients
 	@FXML
+    private AnchorPane patients_view;
+	@FXML
 	TableView<Patients> patients_table_view;
 	@FXML
 	TableColumn<Patients, Integer> id_patient;
@@ -62,6 +65,14 @@ public class ManagerController {
 	TableColumn<Patients, String> pat_name;
 	@FXML
 	TableColumn<Patients, String> pat_last;
+	@FXML
+    private Button add_patient;
+    @FXML
+    private Button delete_patient;
+    @FXML
+    private TextField tf_pat_name;
+    @FXML
+    private TextField tf_pat_last;
 	
 	//window elements for Specialists
 	@FXML
@@ -99,7 +110,7 @@ public class ManagerController {
     @FXML
     private TableColumn<Visits, String> visit_date;
     @FXML
-    private TableColumn<Visits, Integer> visit_term;
+    private TableColumn<Visits, String> visit_term;
     
     
     //window elements for New Visit
@@ -147,6 +158,7 @@ public class ManagerController {
 	void showPatients (MouseEvent event) throws IOException, SQLException{
 		
 		patients = FXCollections.observableArrayList();
+		patients_view.setVisible(true);
 		patients_table_view.setVisible(true);
 		specialists_table_view.setVisible(false);
 		visits_view.setVisible(false);
@@ -165,6 +177,35 @@ public class ManagerController {
 		System.out.println(patients);
 		System.out.println(patients_table_view);
 	}
+	
+	@FXML
+    void addPatient(MouseEvent event) throws SQLException, IOException {
+		tf_pat_name.getText();
+		tf_pat_last.getText();
+				
+		String sql = ("INSERT INTO patients (pat_name, pat_last) VALUES ('"+tf_pat_name.getText()+"','"+tf_pat_last.getText()+"');");
+		System.out.println(sql);
+		PreparedStatement ps = conn.prepareStatement(sql);
+		ps.executeUpdate();
+		showPatients(event);
+    }
+
+  
+
+    @FXML
+    void deletePatient(MouseEvent event) throws SQLException, IOException {
+    		tf_pat_name.getText();
+		tf_pat_last.getText();
+				
+		String sql1 = ("DELETE FROM patients WHERE pat_last='"+tf_pat_last.getText()+"';");
+		System.out.println(sql1);
+		PreparedStatement ps = conn.prepareStatement(sql1);
+		ps.executeUpdate();
+		showPatients(event);
+    }
+	
+	
+	
 	
 	@FXML
 	void showSpecialists (MouseEvent event) throws IOException, SQLException{
@@ -209,8 +250,11 @@ public class ManagerController {
 		LocalDate visit_date1 = visit_date_picker.getValue();
 		System.out.println(visit_date1);
 		//PROBLEM PROBLEM PROBLEM PROBLEM PROBLEM PROBLEM PROBLEM PROBLEM PROBLEM PROBLEM PROBLEM PROBLEM PROBLEM PROBLEM PROBLEM 
-		//String visit_term = (nv_hour_combo.getValue()).toString();
-		System.out.println(visit_term);
+		//String visit_term1 = nv_hour_combo.getValue();
+		//int visit_term1 = Integer.valueOf((visit_term).toString());
+		//HashMap visit_term = Integer.valueOf(hours_to_num);
+		//String visit_term1 = nv_hour_combo.getValue();
+		//System.out.println(hours_to_num.get(hour));
 		
 		visits = FXCollections.observableArrayList();
 		
@@ -221,7 +265,7 @@ public class ManagerController {
 		ps.setString(2, visit_date1.toString());
 		ResultSet rs = ps.executeQuery();
 		while(rs.next()){
-			visits.add(new Visits(rs.getInt(1), rs.getInt(2), rs.getInt(3), rs.getString(4), rs.getInt(5)));
+			visits.add(new Visits(rs.getInt(1), rs.getInt(2), rs.getInt(3), rs.getString(4), rs.getString(5)));
 		}
 		
 		
@@ -236,7 +280,7 @@ public class ManagerController {
 		v_id_patient.setCellValueFactory(new PropertyValueFactory<Visits, Integer>("id_patient"));
 		v_id_spec.setCellValueFactory(new PropertyValueFactory<Visits, Integer>("id_spec"));
 		visit_date.setCellValueFactory(new PropertyValueFactory<Visits, String>("visit_date"));
-		visit_term.setCellValueFactory(new PropertyValueFactory<Visits, Integer>("visit_term"));	
+		visit_term.setCellValueFactory(new PropertyValueFactory<Visits, String>("visit_term"));	
 	}
 	
 	
@@ -290,14 +334,14 @@ public class ManagerController {
 	@FXML
     void setNewVisit(MouseEvent event) throws IOException, SQLException{
 		//"08:00-09:00", "09:00-10:00", "10:00-11:00", "11:00-12:00", "12:00-13:00", "13:00-14:00", "14:00-15:00", "15:00-16:00"
-		hours_to_num.put("08:00-09:00","1");
-		hours_to_num.put("09:00-10:00","2");
-		hours_to_num.put("10:00-11:00","3");
-		hours_to_num.put("11:00-12:00","4");
-		hours_to_num.put("12:00-13:00","5");
-		hours_to_num.put("13:00-14:00","6");
-		hours_to_num.put("14:00-15:00","7");
-		hours_to_num.put("15:00-16:00","8");
+		hours_to_num.put("08:00-09:00", "1");
+		hours_to_num.put("09:00-10:00", "2");
+		hours_to_num.put("10:00-11:00", "3");
+		hours_to_num.put("11:00-12:00", "4");
+		hours_to_num.put("12:00-13:00", "5");
+		hours_to_num.put("13:00-14:00", "6");
+		hours_to_num.put("14:00-15:00", "7");
+		hours_to_num.put("15:00-16:00", "8");
 		
 		String spec = nv_spec_combo.getValue();
 		String spec_last = nv_spec_last_combo.getValue();
@@ -336,6 +380,7 @@ public class ManagerController {
 		ps3.executeUpdate();		
 	}
 	
+
 	@FXML
     void nvChooseLast(ActionEvent event) {
 		
@@ -483,7 +528,7 @@ public class ManagerController {
 		v_id_patient.setCellValueFactory(new PropertyValueFactory<Visits, Integer>("id_patient"));
 		v_id_spec.setCellValueFactory(new PropertyValueFactory<Visits, Integer>("id_spec"));
 		visit_date.setCellValueFactory(new PropertyValueFactory<Visits, String>("visit_date"));
-		//visit_term.setCellValueFactory(new PropertyValueFactory<Visits, String>("visit_term"));	
+		visit_term.setCellValueFactory(new PropertyValueFactory<Visits, String>("visit_term"));	
 	
 		
 		//setting values for spec1 and spec1last used in comboboxes

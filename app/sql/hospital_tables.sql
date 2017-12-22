@@ -31,7 +31,7 @@ CREATE TABLE visits (
     id_patient INT(8) ZEROFILL,
     id_spec INT(4) ZEROFILL,
     visit_date DATE,
-    visit_term INT,
+    visit_term VARCHAR(20),
     FOREIGN KEY (id_patient)
         REFERENCES patients (id_patient),
     FOREIGN KEY (id_spec)

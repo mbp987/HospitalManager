@@ -6,10 +6,10 @@ public class Visits {
 	private Integer id_patient;
 	private Integer id_spec;
 	private String visit_date;
-	private Integer visit_term;
+	private String visit_term;
 	
 	
-	public Visits(Integer id_visit, Integer id_patient, Integer id_spec, String visit_date, Integer visit_term) {
+	public Visits(Integer id_visit, Integer id_patient, Integer id_spec, String visit_date, String visit_term) {
 		super();
 		this.id_visit = id_visit;
 		this.id_patient = id_patient;
@@ -46,10 +46,10 @@ public class Visits {
 	public void setVisit_date(String visit_date) {
 		this.visit_date = visit_date;
 	}
-	public Integer getVisit_start() {
+	public String getVisit_start() {
 		return visit_term;
 	}
-	public void setVisit_start(Integer visit_term) {
+	public void setVisit_start(String visit_term) {
 		this.visit_term = visit_term;
 	}
 }
