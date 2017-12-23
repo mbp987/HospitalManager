@@ -75,6 +75,18 @@ public class ManagerController {
     private TextField tf_pat_last;
 	
 	//window elements for Specialists
+    @FXML
+    private AnchorPane specialists_view;
+    @FXML
+    private TextField tf_spec_name;
+    @FXML
+    private TextField tf_spec_last;
+    @FXML
+    private ComboBox<String> spec_choose;
+    @FXML
+    private Button delete_spec;
+    @FXML
+    private Button add_spec;
 	@FXML
 	TableView<Specialists> specialists_table_view;
 	@FXML
@@ -160,6 +172,7 @@ public class ManagerController {
 		patients = FXCollections.observableArrayList();
 		patients_view.setVisible(true);
 		patients_table_view.setVisible(true);
+		specialists_view.setVisible(false);
 		specialists_table_view.setVisible(false);
 		visits_view.setVisible(false);
 		new_visit_view.setVisible(false);
@@ -211,7 +224,9 @@ public class ManagerController {
 	void showSpecialists (MouseEvent event) throws IOException, SQLException{
 		
 		specialists = FXCollections.observableArrayList();
+		patients_view.setVisible(false);
 		patients_table_view.setVisible(false);
+		specialists_view.setVisible(true);
 		specialists_table_view.setVisible(true);
 		visits_view.setVisible(false);
 		new_visit_view.setVisible(false);
@@ -230,10 +245,37 @@ public class ManagerController {
 		System.out.println(specialists_table_view);
 	}
 	
+	@FXML
+    void addSpec(MouseEvent event) throws SQLException, IOException {
+		tf_spec_name.getText();
+		tf_spec_last.getText();
+		spec_choose.getValue();
+		
+		String sql = ("INSERT INTO specialists (spec_name, spec_last, spec) VALUES ('"+tf_spec_name.getText()+"','"+tf_spec_last.getText()+"','"+spec_choose.getValue()+"');");
+		System.out.println(sql);
+		PreparedStatement ps = conn.prepareStatement(sql);
+		ps.executeUpdate();
+		showSpecialists(event);
+    }
+
+  
+    @FXML
+    void deleteSpec(MouseEvent event) throws SQLException, IOException {
+    		tf_spec_last.getText();
+				
+		String sql1 = ("DELETE FROM specialists WHERE spec_last='"+tf_spec_last.getText()+"';");
+		System.out.println(sql1);
+		PreparedStatement ps = conn.prepareStatement(sql1);
+		ps.executeUpdate();
+		showSpecialists(event);
+    }
+	
 	
 	@FXML
     void showVisits(MouseEvent event) {
+		patients_view.setVisible(false);
 		patients_table_view.setVisible(false);
+		specialists_view.setVisible(false);
 		specialists_table_view.setVisible(false);
 		visits_view.setVisible(true);
 		new_visit_view.setVisible(false);
@@ -249,6 +291,7 @@ public class ManagerController {
 		System.out.println(spec_last);
 		LocalDate visit_date1 = visit_date_picker.getValue();
 		System.out.println(visit_date1);
+		
 		//PROBLEM PROBLEM PROBLEM PROBLEM PROBLEM PROBLEM PROBLEM PROBLEM PROBLEM PROBLEM PROBLEM PROBLEM PROBLEM PROBLEM PROBLEM 
 		//String visit_term1 = nv_hour_combo.getValue();
 		//int visit_term1 = Integer.valueOf((visit_term).toString());
@@ -287,7 +330,9 @@ public class ManagerController {
 	
 	@FXML
 	void showNewVisit(MouseEvent event) throws IOException, SQLException{
+		patients_view.setVisible(false);
 		patients_table_view.setVisible(false);
+		specialists_view.setVisible(false);
 		specialists_table_view.setVisible(false);
 		visits_view.setVisible(false);
 		new_visit_view.setVisible(true);
@@ -549,13 +594,15 @@ public class ManagerController {
 		}
 		spec1last = spec1last.sorted();
 		
+		spec_choose.setItems(spec1);
+		
 		spec_combo.setItems(spec1);
 		spec_last_combo.setItems(spec1last);
 		
 		nv_spec_combo.setItems(spec1);
 		nv_spec_last_combo.setItems(spec1last);
 		
-		//setting values for  and patient1last used in combobox
+		//setting values for patientlast and patient1last used in combobox
 		ps2 = conn.prepareStatement("SELECT pat_last FROM patients");
 		ResultSet rs2 = ps2.executeQuery();
 		

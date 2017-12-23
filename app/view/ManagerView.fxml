@@ -20,6 +20,10 @@
       <Button fx:id="btn_patients" layoutX="10.0" layoutY="340.0" mnemonicParsing="false" onMouseClicked="#showPatients" prefHeight="50.0" prefWidth="100.0" text="Patients" />
       <AnchorPane fx:id="patients_view" layoutX="130.0" layoutY="14.0" prefHeight="375.0" prefWidth="520.0" visible="false">
          <children>
+            <TextField fx:id="tf_pat_name" promptText="Name..." />
+            <TextField fx:id="tf_pat_last" layoutX="178.0" promptText="Surname..." />
+            <Button fx:id="add_patient" layoutX="314.0" layoutY="38.0" mnemonicParsing="false" onMouseClicked="#addPatient" text="Add patient" />
+            <Button fx:id="delete_patient" layoutX="414.0" layoutY="38.0" mnemonicParsing="false" onMouseClicked="#deletePatient" text="Delete patient" />
             <TableView fx:id="patients_table_view" layoutY="76.0" prefHeight="299.0" prefWidth="520.0">
               <columns>
                 <TableColumn fx:id="id_patient" prefWidth="60.0" text="ID" />
@@ -27,20 +31,25 @@
                   <TableColumn fx:id="pat_last" prefWidth="240.0" text="Surname" />
               </columns>
             </TableView>
-            <Button fx:id="add_patient" layoutX="314.0" layoutY="38.0" mnemonicParsing="false" onMouseClicked="#addPatient" text="Add patient" />
-            <Button fx:id="delete_patient" layoutX="414.0" layoutY="38.0" mnemonicParsing="false" onMouseClicked="#deletePatient" text="Delete patient" />
-            <TextField fx:id="tf_pat_name" promptText="Name..." />
-            <TextField fx:id="tf_pat_last" layoutX="178.0" promptText="Surname..." />
          </children>
       </AnchorPane>
-      <TableView fx:id="specialists_table_view" layoutX="130.0" layoutY="90.0" prefHeight="299.0" prefWidth="520.0" visible="false">
-         <columns>
-            <TableColumn fx:id="id_spec" prefWidth="40.0" text="ID" />
-            <TableColumn fx:id="spec_name" minWidth="0.0" prefWidth="150.0" text="Name" />
-            <TableColumn fx:id="spec_last" prefWidth="150.0" text="Surname" />
-            <TableColumn fx:id="spec" prefWidth="180.0" text="Speciality" />
-         </columns>
-      </TableView>
+      <AnchorPane fx:id="specialists_view" layoutX="130.0" layoutY="14.0" prefHeight="375.0" prefWidth="520.0" visible="false">
+         <children>
+            <TextField fx:id="tf_spec_name" promptText="Name..." />
+            <TextField fx:id="tf_spec_last" layoutX="177.0" promptText="Surname..." />
+            <ComboBox fx:id="spec_choose" layoutX="353.0" prefHeight="27.0" prefWidth="167.0" promptText="Speciality..." />
+            <Button fx:id="delete_spec" layoutX="400.0" layoutY="38.0" mnemonicParsing="false" onMouseClicked="#deleteSpec" text="Delete specialist" />
+            <Button fx:id="add_spec" layoutX="285.0" layoutY="38.0" mnemonicParsing="false" onMouseClicked="#addSpec" text="Add specialist" />
+            <TableView fx:id="specialists_table_view" layoutY="76.0" prefHeight="299.0" prefWidth="520.0">
+               <columns>
+                  <TableColumn fx:id="id_spec" prefWidth="40.0" text="ID" />
+                  <TableColumn fx:id="spec_name" minWidth="0.0" prefWidth="150.0" text="Name" />
+                  <TableColumn fx:id="spec_last" prefWidth="150.0" text="Surname" />
+                  <TableColumn fx:id="spec" prefWidth="180.0" text="Speciality" />
+               </columns>
+            </TableView>
+         </children>
+      </AnchorPane>
       <AnchorPane fx:id="visits_view" layoutX="130.0" layoutY="14.0" prefHeight="375.0" prefWidth="520.0" visible="false">
          <children>
             <ComboBox fx:id="spec_combo" layoutX="1.0" onAction="#chooseLast" prefHeight="27.0" prefWidth="150.0" promptText="Speciality" />
